@@ -51,7 +51,7 @@ export default function AdminDashboard() {
   const fetchClients = async () => {
     try {
       const response = await fetch('/api/clients')
-      const result = await response.json()
+      const result = await response.json() as { success: boolean; data: Client[] }
       if (result.success) {
         setClients(result.data)
       }
@@ -64,7 +64,7 @@ export default function AdminDashboard() {
     try {
       setLoading(true)
       const response = await fetch(`/api/clients/${clientId}/records`)
-      const result = await response.json()
+      const result = await response.json() as { success: boolean; data: DailyRecord[] }
       if (result.success) {
         setRecords(result.data)
       }
@@ -91,7 +91,7 @@ export default function AdminDashboard() {
         body: JSON.stringify(formData),
       })
 
-      const result = await response.json()
+      const result = await response.json() as { success: boolean; data: { regular_candles_comparison: string } }
       if (result.success) {
         // 显示成功消息，包含自动计算的对比值
         const comparison = result.data.regular_candles_comparison
@@ -128,11 +128,11 @@ export default function AdminDashboard() {
       for (const client of clients) {
         try {
           const response = await fetch(`/api/clients/${client.id}/records`)
-          const result = await response.json()
+          const result = await response.json() as { success: boolean; data: DailyRecord[] }
 
           if (result.success && result.data.length > 0) {
             // 查找当天的记录
-            const todayRecord = result.data.find((record: any) => record.date === today)
+            const todayRecord = result.data.find((record: DailyRecord) => record.date === today)
 
             if (todayRecord) {
               hasAnyData = true
@@ -423,7 +423,7 @@ function ManageRecords({ records, loading, selectedClientId }: {
           method: 'DELETE',
         })
 
-        const result = await response.json()
+        const result = await response.json() as { success: boolean }
         if (result.success) {
           alert('记录删除成功！')
           window.location.reload() // 简单的刷新，实际项目中应该更新状态
