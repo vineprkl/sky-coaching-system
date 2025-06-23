@@ -11,7 +11,8 @@
 //   !supabaseAnonKey.includes('placeholder')
 
 // 暂时设置为 null，使用模拟数据
-export const supabase = null
+// 明确类型定义以避免 TypeScript 推断为 never
+export const supabase: any = null
 
 // 模拟数据（当 Supabase 未配置时使用）
 const mockClients: Client[] = [
