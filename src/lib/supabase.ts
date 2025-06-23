@@ -154,6 +154,21 @@ export const clientsApi = {
 
   // 更新客户信息
   async update(id: string, updates: Partial<Omit<Client, 'id' | 'created_at' | 'updated_at'>>): Promise<Client> {
+    if (!supabase) {
+      // 使用模拟数据
+      const clientIndex = mockClients.findIndex(client => client.id === id)
+      if (clientIndex === -1) {
+        throw new Error('Client not found')
+      }
+
+      mockClients[clientIndex] = {
+        ...mockClients[clientIndex],
+        ...updates,
+        updated_at: new Date().toISOString()
+      }
+      return mockClients[clientIndex]
+    }
+
     const { data, error } = await supabase
       .from('clients')
       .update(updates)
@@ -212,6 +227,16 @@ export const recordsApi = {
 
   // 获取指定客户的最新记录
   async getLatestByClientId(clientId: string): Promise<DailyRecord | null> {
+    if (!supabase) {
+      // 使用模拟数据
+      const clientRecords = mockRecords.filter(record => record.client_id === clientId)
+      if (clientRecords.length === 0) return null
+
+      // 按日期排序，返回最新的
+      clientRecords.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      return clientRecords[0]
+    }
+
     const { data, error } = await supabase
       .from('daily_records')
       .select('*')
@@ -355,6 +380,15 @@ export const recordsApi = {
 
   // 获取指定日期范围内的记录
   async getByDateRange(clientId: string, startDate: string, endDate: string): Promise<DailyRecord[]> {
+    if (!supabase) {
+      // 使用模拟数据
+      return mockRecords.filter(record =>
+        record.client_id === clientId &&
+        record.date >= startDate &&
+        record.date <= endDate
+      ).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    }
+
     const { data, error } = await supabase
       .from('daily_records')
       .select('*')
