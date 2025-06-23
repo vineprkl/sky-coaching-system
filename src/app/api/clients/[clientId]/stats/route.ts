@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { recordsApi, DailyRecord } from '@/lib/supabase'
+import { recordsApi } from '@/lib/supabase'
 
 interface RouteParams {
   params: Promise<{
