@@ -29,7 +29,14 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<'add' | 'manage' | 'clients'>('add')
 
   // 表单状态
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    date: string
+    regular_candles: string
+    seasonal_candles: string
+    online_time: string
+    actual_duration: string
+    notes: string
+  }>({
     date: new Date().toISOString().split('T')[0],
     regular_candles: '',
     seasonal_candles: '',
@@ -587,7 +594,7 @@ function StatisticsCard({ records }: { records: DailyRecord[] }) {
 
 function ClientManagement({ clients, onRefresh }: { clients: Client[], onRefresh: () => void }) {
   const [showAddForm, setShowAddForm] = useState(false)
-  const [newClient, setNewClient] = useState({ name: '', avatar: '🌟' })
+  const [newClient, setNewClient] = useState<{ name: string; avatar: string }>({ name: '', avatar: '🌟' })
 
   const handleAddClient = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -600,7 +607,7 @@ function ClientManagement({ clients, onRefresh }: { clients: Client[], onRefresh
         body: JSON.stringify(newClient),
       })
 
-      const result = await response.json()
+      const result = await response.json() as { success: boolean }
       if (result.success) {
         alert('客户添加成功！')
         setNewClient({ name: '', avatar: '🌟' })
@@ -620,7 +627,7 @@ function ClientManagement({ clients, onRefresh }: { clients: Client[], onRefresh
           method: 'DELETE',
         })
 
-        const result = await response.json()
+        const result = await response.json() as { success: boolean }
         if (result.success) {
           alert('客户删除成功！')
           onRefresh()
