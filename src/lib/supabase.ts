@@ -11,8 +11,44 @@
 //   !supabaseAnonKey.includes('placeholder')
 
 // 暂时设置为 null，使用模拟数据
-// 明确类型定义以避免 TypeScript 推断为 never
-export const supabase: any = null
+// 定义一个简单的接口来避免 TypeScript 类型推断问题
+interface SupabaseClient {
+  from: (table: string) => {
+    select: (columns: string) => {
+      eq: (column: string, value: string) => {
+        order: (column: string, options?: { ascending: boolean }) => {
+          limit?: (count: number) => {
+            single: () => Promise<{ data: unknown; error: unknown }>
+          }
+        }
+        single: () => Promise<{ data: unknown; error: unknown }>
+      }
+      order: (column: string, options?: { ascending: boolean }) => Promise<{ data: unknown; error: unknown }>
+      gte: (column: string, value: string) => {
+        lte: (column: string, value: string) => {
+          order: (column: string, options?: { ascending: boolean }) => Promise<{ data: unknown; error: unknown }>
+        }
+      }
+    }
+    insert: (data: unknown[]) => {
+      select: () => {
+        single: () => Promise<{ data: unknown; error: unknown }>
+      }
+    }
+    update: (data: unknown) => {
+      eq: (column: string, value: string) => {
+        select: () => {
+          single: () => Promise<{ data: unknown; error: unknown }>
+        }
+      }
+    }
+    delete: () => {
+      eq: (column: string, value: string) => Promise<{ error: unknown }>
+    }
+  }
+}
+
+export const supabase: SupabaseClient | null = null
 
 // 模拟数据（当 Supabase 未配置时使用）
 const mockClients: Client[] = [
