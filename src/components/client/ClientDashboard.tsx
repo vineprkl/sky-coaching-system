@@ -10,9 +10,11 @@ interface DailyRecord {
   regular_candles: number
   regular_candles_comparison: string
   seasonal_candles: number
-  service_hours: number
+  online_time?: string
+  actual_duration?: number
   notes: string
   created_at: string
+  updated_at: string
 }
 
 interface ClientDashboardProps {

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { recordsApi } from '@/lib/supabase'
+import { recordsApi, DailyRecord } from '@/lib/supabase'
 
 interface RouteParams {
   params: Promise<{
@@ -10,12 +10,12 @@ interface RouteParams {
 export async function GET(request: Request, { params }: RouteParams) {
   try {
     const { clientId } = await params
-    
+
     const records = await recordsApi.getByClientId(clientId)
-    
+
     if (records.length === 0) {
-      return NextResponse.json({ 
-        success: true, 
+      return NextResponse.json({
+        success: true,
         data: {
           totalRecords: 0,
           totalCandles: 0,
@@ -27,27 +27,27 @@ export async function GET(request: Request, { params }: RouteParams) {
         }
       })
     }
-    
+
     // 计算统计数据
     const totalRecords = records.length
     const totalCandles = records.reduce((sum, record) => sum + record.regular_candles, 0)
     const totalSeasonalCandles = records.reduce((sum, record) => sum + record.seasonal_candles, 0)
-    const totalHours = records.reduce((sum, record) => sum + record.service_hours, 0)
+    const totalHours = records.reduce((sum, record) => sum + (record.actual_duration || 0), 0)
     const avgCandles = Math.round(totalCandles / totalRecords)
     const avgSeasonalCandles = Math.round(totalSeasonalCandles / totalRecords)
     const avgHours = parseFloat((totalHours / totalRecords).toFixed(1))
-    
+
     // 最近7天的趋势
     const last7Days = records.slice(0, 7)
     const trend = last7Days.map(record => ({
       date: record.date,
       regular_candles: record.regular_candles,
       seasonal_candles: record.seasonal_candles,
-      service_hours: record.service_hours
+      actual_duration: record.actual_duration
     }))
-    
-    return NextResponse.json({ 
-      success: true, 
+
+    return NextResponse.json({
+      success: true,
       data: {
         totalRecords,
         totalCandles,
