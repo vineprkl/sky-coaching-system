@@ -277,7 +277,21 @@ export default function AdminDashboard() {
   )
 }
 
-function AddRecordForm({ formData, setFormData, onSubmit, disabled }: any) {
+interface FormData {
+  date: string
+  regular_candles: string
+  seasonal_candles: string
+  online_time: string
+  actual_duration: string
+  notes: string
+}
+
+function AddRecordForm({ formData, setFormData, onSubmit, disabled }: {
+  formData: FormData
+  setFormData: (data: FormData) => void
+  onSubmit: (e: React.FormEvent) => void
+  disabled: boolean
+}) {
   return (
     <div className="bg-gradient-to-br from-slate-800/90 to-purple-900/80 rounded-lg p-6 shadow-xl border border-purple-400/30">
       <h2 className="text-xl font-bold text-white mb-6 drop-shadow-md">✨ 添加每日数据</h2>
@@ -381,8 +395,12 @@ function AddRecordForm({ formData, setFormData, onSubmit, disabled }: any) {
   )
 }
 
-function ManageRecords({ records, loading, selectedClientId }: any) {
-  const handleCopyToday = (record: any) => {
+function ManageRecords({ records, loading, selectedClientId }: {
+  records: DailyRecord[],
+  loading: boolean,
+  selectedClientId: string
+}) {
+  const handleCopyToday = (record: DailyRecord) => {
     const today = new Date().toISOString().split('T')[0]
     const copyText = `📅 ${today}
 🕯️ 普通蜡烛：${record.regular_candles} (${record.regular_candles_comparison})
@@ -508,9 +526,8 @@ function StatisticsCard({ records }: { records: DailyRecord[] }) {
     )
   }
 
-  // 计算普通蜡烛总数和平均数
+  // 计算普通蜡烛总数
   const totalCandles = records.reduce((sum, record) => sum + Number(record.regular_candles), 0)
-  const avgCandles = Math.round(totalCandles / totalRecords)
 
   // 计算普通蜡烛平均增长（基于对比值）
   const recordsWithComparison = records.filter(r => r.regular_candles_comparison && r.regular_candles_comparison !== 'NEW')
@@ -568,7 +585,7 @@ function StatisticsCard({ records }: { records: DailyRecord[] }) {
   )
 }
 
-function ClientManagement({ clients, onRefresh }: { clients: any[], onRefresh: () => void }) {
+function ClientManagement({ clients, onRefresh }: { clients: Client[], onRefresh: () => void }) {
   const [showAddForm, setShowAddForm] = useState(false)
   const [newClient, setNewClient] = useState({ name: '', avatar: '🌟' })
 

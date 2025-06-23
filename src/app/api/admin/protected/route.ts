@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server'
 import { requireAdminAuth } from '@/lib/auth'
 
-async function handler(request: Request, context: any) {
+async function handler(request: Request, context: Record<string, unknown>) {
   const { user } = context
-  
+
   return NextResponse.json({
     success: true,
     message: 'Access granted to protected admin resource',

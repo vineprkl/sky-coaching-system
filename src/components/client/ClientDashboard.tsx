@@ -163,7 +163,7 @@ function HistoryView({ records }: { records: DailyRecord[] }) {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="space-y-4">
-        {records.map((record, index) => (
+        {records.map((record) => (
           <div
             key={record.id}
             className="bg-gradient-to-br from-slate-800/90 to-purple-900/80 backdrop-blur-sm rounded-xl p-4 shadow-xl hover:shadow-2xl transition-all duration-300 border border-purple-400/30 hover:border-blue-400/50"
