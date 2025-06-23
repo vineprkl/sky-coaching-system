@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sky 代练服务 - 客户数据反馈系统
 
-## Getting Started
+一个基于 Next.js + Vercel 的《光·遇》代练服务客户数据反馈平台，采用现代化的双入口设计。
 
-First, run the development server:
+## ✨ 功能特色
+
+- 🎮 **《光·遇》主题设计** - 温暖治愈的视觉风格
+- 📱 **移动端优先** - 完美适配手机和平板
+- 🔐 **双入口系统** - 客户前端与管理后台完全分离
+- 🎯 **Netflix 风格选择** - 直观的客户选择界面
+- 📊 **数据可视化** - 美观的数据展示和历史记录
+- ⚡ **现代技术栈** - Next.js 15 + React 19 + Tailwind CSS 4
+
+## 🚀 快速开始
+
+### 1. 环境要求
+
+- Node.js 18+
+- npm 或 yarn
+
+### 2. 安装依赖
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# 进入项目目录
+cd sky-coaching-system
+
+# 安装依赖
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. 启动开发服务器
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# 启动开发服务器
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+服务器启动后，打开浏览器访问：
+- **主页（客户选择）**: http://localhost:3000
+- **管理后台**: http://localhost:3000/admin
 
-## Learn More
+## 📱 界面预览
 
-To learn more about Next.js, take a look at the following resources:
+### 客户选择界面
+- Netflix 风格的网格布局
+- 《光·遇》主题的头像和动画
+- 响应式设计，完美适配移动端
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 个人仪表盘
+- **今日反馈**: 卡片式数据展示
+  - 普通蜡烛数量及对比
+  - 季节蜡烛收集情况
+  - 服务时间统计
+- **历史星图**: 时间线式历史记录
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 管理后台
+- 简洁高效的功能性设计
+- 客户选择下拉菜单
+- 表单式数据录入
+- 表格式数据管理

@@ -6,12 +6,20 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "test": "echo \"No tests specified\" && exit 0",
+    "test:watch": "echo \"No tests specified\" && exit 0",
+    "analyze": "cross-env ANALYZE=true next build",
+    "clean": "rm -rf .next out",
+    "vercel-build": "next build"
   },
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "next": "15.3.4"
+    "next": "15.3.4",
+    "@supabase/supabase-js": "^2.39.0"
   },
   "devDependencies": {
     "typescript": "^5",
