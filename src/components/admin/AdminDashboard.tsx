@@ -6,21 +6,22 @@ interface Client {
   id: string
   name: string
   avatar: string
-  created_at: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 interface DailyRecord {
   id: string
-  client_id: string
+  clientId: string
   date: string
-  regular_candles: number
-  regular_candles_comparison: string
-  seasonal_candles: number
-  online_time?: string
-  actual_duration?: number
+  regularCandles: number
+  regularCandlesComparison: string
+  seasonalCandles: number
+  onlineTime?: string | null
+  actualDuration?: number | null
   notes: string
-  created_at: string
-  updated_at: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export default function AdminDashboard() {
@@ -100,10 +101,10 @@ export default function AdminDashboard() {
         body: JSON.stringify(formData),
       })
 
-      const result = await response.json() as { success: boolean; data: { regular_candles_comparison: string } }
+      const result = await response.json() as { success: boolean; data: { regularCandlesComparison: string } }
       if (result.success) {
         // 显示成功消息，包含自动计算的对比值
-        const comparison = result.data.regular_candles_comparison
+        const comparison = result.data.regularCandlesComparison
         alert(`✅ 数据添加成功！\n对比值已自动计算：${comparison}`)
         setFormData({
           date: new Date().toISOString().split('T')[0],
@@ -146,10 +147,10 @@ export default function AdminDashboard() {
             if (todayRecord) {
               hasAnyData = true
               allData.push(`👤 ${client.avatar} ${client.name}`)
-              allData.push(`🕯️ 普通蜡烛：${todayRecord.regular_candles} (${todayRecord.regular_candles_comparison})`)
-              allData.push(`✨ 季节蜡烛：${todayRecord.seasonal_candles}`)
-              allData.push(`🕐 上线时间：${todayRecord.online_time || '未记录'}`)
-              allData.push(`⏱️ 实际用时：${todayRecord.actual_duration ? `${todayRecord.actual_duration}分钟` : '未记录'}`)
+              allData.push(`🕯️ 普通蜡烛：${todayRecord.regularCandles} (${todayRecord.regularCandlesComparison})`)
+              allData.push(`✨ 季节蜡烛：${todayRecord.seasonalCandles}`)
+              allData.push(`🕐 上线时间：${todayRecord.onlineTime || '未记录'}`)
+              allData.push(`⏱️ 实际用时：${todayRecord.actualDuration ? `${todayRecord.actualDuration}分钟` : '未记录'}`)
               allData.push(`📝 备注：${todayRecord.notes || '无'}`)
               allData.push('')
             } else {
@@ -412,10 +413,10 @@ function ManageRecords({ records, loading, selectedClientId }: {
   const handleCopyToday = (record: DailyRecord) => {
     const today = new Date().toISOString().split('T')[0]
     const copyText = `📅 ${today}
-🕯️ 普通蜡烛：${record.regular_candles} (${record.regular_candles_comparison})
-✨ 季节蜡烛：${record.seasonal_candles}
-🕐 上线时间：${record.online_time || '未记录'}
-⏱️ 实际用时：${record.actual_duration ? `${record.actual_duration}分钟` : '未记录'}
+🕯️ 普通蜡烛：${record.regularCandles} (${record.regularCandlesComparison})
+✨ 季节蜡烛：${record.seasonalCandles}
+🕐 上线时间：${record.onlineTime || '未记录'}
+⏱️ 实际用时：${record.actualDuration ? `${record.actualDuration}分钟` : '未记录'}
 📝 备注：${record.notes || '无'}`
 
     navigator.clipboard.writeText(copyText).then(() => {
@@ -485,14 +486,14 @@ function ManageRecords({ records, loading, selectedClientId }: {
                 <tr key={record.id} className="border-b border-purple-400/20 hover:bg-slate-700/50 transition-colors">
                   <td className="py-3 px-4 text-blue-200 font-medium">{record.date}</td>
                   <td className="py-3 px-4 text-blue-200 font-medium">
-                    {record.regular_candles}
+                    {record.regularCandles}
                     <span className="text-green-300 text-sm ml-2 font-bold drop-shadow-md">
-                      {record.regular_candles_comparison}
+                      {record.regularCandlesComparison}
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-blue-200 font-medium">{record.seasonal_candles}</td>
-                  <td className="py-3 px-4 text-green-300 font-medium">{record.online_time || '-'}</td>
-                  <td className="py-3 px-4 text-indigo-300 font-medium">{record.actual_duration ? `${record.actual_duration}分` : '-'}</td>
+                  <td className="py-3 px-4 text-blue-200 font-medium">{record.seasonalCandles}</td>
+                  <td className="py-3 px-4 text-green-300 font-medium">{record.onlineTime || '-'}</td>
+                  <td className="py-3 px-4 text-indigo-300 font-medium">{record.actualDuration ? `${record.actualDuration}分` : '-'}</td>
                   <td className="py-3 px-4 max-w-xs truncate text-purple-200">{record.notes}</td>
                   <td className="py-3 px-4">
                     <div className="flex space-x-2">

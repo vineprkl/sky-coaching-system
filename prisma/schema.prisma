@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// 客户表
+model Client {
+  id        String   @id @default(cuid())
+  name      String   @db.VarChar(100)
+  avatar    String   @db.VarChar(10)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // 关联的每日记录
+  records   DailyRecord[]
+
+  @@map("clients")
+}
+
+// 每日记录表
+model DailyRecord {
+  id                        String   @id @default(cuid())
+  clientId                  String   @map("client_id")
+  date                      String   @db.VarChar(10) // YYYY-MM-DD 格式
+  regularCandles            Int      @map("regular_candles")
+  regularCandlesComparison  String   @map("regular_candles_comparison") @db.VarChar(10)
+  seasonalCandles           Int      @map("seasonal_candles")
+  onlineTime                String?  @map("online_time") @db.VarChar(10) // HH:MM 格式
+  actualDuration            Int?     @map("actual_duration") // 实际用时（分钟）
+  notes                     String   @db.Text
+  createdAt                 DateTime @default(now()) @map("created_at")
+  updatedAt                 DateTime @updatedAt @map("updated_at")
+
+  // 关联到客户
+  client                    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@map("daily_records")
+  @@index([clientId])
+  @@index([date])
+}

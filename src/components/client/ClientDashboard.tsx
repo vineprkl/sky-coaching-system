@@ -5,16 +5,16 @@ import { useRouter } from 'next/navigation'
 
 interface DailyRecord {
   id: string
-  client_id: string
+  clientId: string
   date: string
-  regular_candles: number
-  regular_candles_comparison: string
-  seasonal_candles: number
-  online_time?: string
-  actual_duration?: number
+  regularCandles: number
+  regularCandlesComparison: string
+  seasonalCandles: number
+  onlineTime?: string | null
+  actualDuration?: number | null
   notes: string
-  created_at: string
-  updated_at: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 interface ClientDashboardProps {
@@ -121,29 +121,29 @@ function TodayView({ record }: { record?: DailyRecord }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="text-center p-4 bg-gradient-to-br from-yellow-600/80 to-orange-600/80 rounded-xl border border-yellow-400/30">
             <div className="text-2xl mb-2 filter drop-shadow-lg">🕯️</div>
-            <div className="text-2xl font-bold text-white drop-shadow-md">{record.regular_candles}</div>
+            <div className="text-2xl font-bold text-white drop-shadow-md">{record.regularCandles}</div>
             <div className="text-sm text-yellow-200">普通蜡烛</div>
-            <div className="text-xs text-green-300 mt-1 font-bold">{record.regular_candles_comparison}</div>
+            <div className="text-xs text-green-300 mt-1 font-bold">{record.regularCandlesComparison}</div>
           </div>
 
           <div className="text-center p-4 bg-gradient-to-br from-purple-600/80 to-pink-600/80 rounded-xl border border-purple-400/30">
             <div className="text-2xl mb-2 filter drop-shadow-lg">✨</div>
-            <div className="text-2xl font-bold text-white drop-shadow-md">{record.seasonal_candles}</div>
+            <div className="text-2xl font-bold text-white drop-shadow-md">{record.seasonalCandles}</div>
             <div className="text-sm text-purple-200">季节蜡烛</div>
           </div>
 
-          {record.online_time && (
+          {record.onlineTime && (
             <div className="text-center p-4 bg-gradient-to-br from-green-600/80 to-emerald-600/80 rounded-xl border border-green-400/30">
               <div className="text-2xl mb-2 filter drop-shadow-lg">🕐</div>
-              <div className="text-2xl font-bold text-white drop-shadow-md">{record.online_time}</div>
+              <div className="text-2xl font-bold text-white drop-shadow-md">{record.onlineTime}</div>
               <div className="text-sm text-green-200">上线时间</div>
             </div>
           )}
 
-          {record.actual_duration && (
+          {record.actualDuration && (
             <div className="text-center p-4 bg-gradient-to-br from-indigo-600/80 to-violet-600/80 rounded-xl border border-indigo-400/30">
               <div className="text-2xl mb-2 filter drop-shadow-lg">⏱️</div>
-              <div className="text-2xl font-bold text-white drop-shadow-md">{record.actual_duration}分</div>
+              <div className="text-2xl font-bold text-white drop-shadow-md">{record.actualDuration}分</div>
               <div className="text-sm text-indigo-200">实际用时</div>
             </div>
           )}
@@ -176,14 +176,14 @@ function HistoryView({ records }: { records: DailyRecord[] }) {
                 <div>
                   <div className="font-bold text-white drop-shadow-md">{record.date}</div>
                   <div className="text-sm text-blue-200">
-                    🕯️ {record.regular_candles} | ✨ {record.seasonal_candles}
-                    {record.online_time && ` | 🕐 ${record.online_time}`}
-                    {record.actual_duration && ` | ⏱️ ${record.actual_duration}分`}
+                    🕯️ {record.regularCandles} | ✨ {record.seasonalCandles}
+                    {record.onlineTime && ` | 🕐 ${record.onlineTime}`}
+                    {record.actualDuration && ` | ⏱️ ${record.actualDuration}分`}
                   </div>
                 </div>
               </div>
               <div className="text-sm text-green-300 font-bold drop-shadow-md">
-                {record.regular_candles_comparison}
+                {record.regularCandlesComparison}
               </div>
             </div>
           </div>

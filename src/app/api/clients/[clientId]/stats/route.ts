@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { recordsApi } from '@/lib/supabase'
+import { recordsApi } from '@/lib/prisma'
 
 interface RouteParams {
   params: Promise<{

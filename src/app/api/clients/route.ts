@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { clientsApi } from '@/lib/supabase'
+import { clientsApi } from '@/lib/prisma'
 
 export async function GET() {
   try {
