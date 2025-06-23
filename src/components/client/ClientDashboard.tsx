@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 
 interface DailyRecord {
@@ -25,11 +25,7 @@ export default function ClientDashboard({ clientId }: ClientDashboardProps) {
   const [activeTab, setActiveTab] = useState<'today' | 'history'>('today')
   const router = useRouter()
 
-  useEffect(() => {
-    fetchRecords()
-  }, [clientId])
-
-  const fetchRecords = async () => {
+  const fetchRecords = useCallback(async () => {
     try {
       const response = await fetch(`/api/clients/${clientId}/records`)
       const result = await response.json()
@@ -41,7 +37,11 @@ export default function ClientDashboard({ clientId }: ClientDashboardProps) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [clientId])
+
+  useEffect(() => {
+    fetchRecords()
+  }, [fetchRecords])
 
   const todayRecord = records[0] // 假设第一条是最新的记录
 
